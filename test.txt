@@ -1,0 +1,16 @@
+|Q|:	6
+Sigma: 	a	b	c	d
+------------------------------
+	0:	1	2	0	3
+	1:	4	3	4	4
+	2:	1	5	2	3
+	3:	5	3	2	5
+	4:	4	3	4	4
+	5:	5	5	2	5
+------------------------------
+Initial State: 0
+Accepting Sate(s): 0,2,3,5
+
+-- Input strings for testing -----------
+aabacadbdcacbacadbacaabacdcbbcadbcadbacabacabacdacabca
+aabacadbdcacbacadbacaabacdcbbcadbcadbacabacabacdacabca
