@@ -10,6 +10,8 @@ Sigma: a b c d
 Initial State: 3
 Accepting Sate(s): 3,4
 -- Input strings for testing -----------
+
 aabacadbdcacbacadbacaabacdcbbcadbcadbacabacabacdacabca
 a
-bbaab
+bbac
+bbacabad

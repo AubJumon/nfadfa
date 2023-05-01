@@ -95,35 +95,39 @@ public class DFA {
         }
     }
 
-    // public void parsestrings(String fileName) {
-    //     String curString;
-    //     int curState;
-    //     int curChar;
-    //     int yes = 0;
-    //     int no = 0;
-    //     System.out.println("Printing results of strings attatched in "+fileName);
-    //     for (int i = 0; i<inputStrings.size(); i++)
-    //     {
-    //         curState = initialState;
-    //         curString = inputStrings.get(i);
-    //         for (int j = 0; j<curString.length(); j++)
-    //         {
-    //             curChar = Arrays.binarySearch(Sigma,curString.charAt(j));
-    //             curState = structure.get(curState).get(curChar);
-    //         }
-    //         if (acceptingStates.contains(curState))
-    //         {
-    //             System.out.print("Yes ");
-    //             yes++;
-    //         }
-    //         else 
-    //         {
-    //             System.out.print("No ");
-    //             no++;
-    //         }
-    //     }
-    //     System.out.println("\n\nYes:"+yes+" No:"+no);
-    // }
+    public void parsestrings(String fileName) {
+        String curString;
+        int curState;
+        int curChar;
+        int yes = 0;
+        int no = 0;
+        System.out.println("Printing results of strings attatched in "+fileName);
+        for (int i = 1; i<inputStrings.size(); i++)
+        {
+            curState = initialState;
+            curString = inputStrings.get(i);
+            for (int j = 0; j<curString.length(); j++)
+            {
+                curChar = Arrays.binarySearch(Sigma,curString.charAt(j));
+                curState = structure[curState][curChar];
+            }
+            if (acceptingStates.contains(curState))
+            {
+                System.out.print("Yes ");
+                yes++;
+            }
+            else 
+            {
+                System.out.print("No ");
+                no++;
+            }
+            if ((yes+no)==15)
+            {
+                System.out.println();
+            }
+        }
+        System.out.println("\n\nYes:"+yes+" No:"+no);
+    }
 
     public void minimizeDfa() {
         boolean initialStateChanged = false;
@@ -320,7 +324,7 @@ public class DFA {
     }
 
     public String toString() {
-        String rep = "|Q|:\t" + Q + "\nSigma: ";
+        String rep = "Sigma: ";
         for (int i = 0; i < Sigma.length; i++) {
             rep += "\t" + Sigma[i];
         }
@@ -355,5 +359,10 @@ public class DFA {
         public int B() { return b; }
         public void setA(int a) { this.a = a; }
         public void setB(int b) { this.b = b; }
+    }
+
+    public int getQ()
+    {
+        return Q;
     }
 }

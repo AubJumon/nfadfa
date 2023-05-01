@@ -89,12 +89,12 @@ public class NFA {
         }
     }
     
-    public void printDFA(String fileName,DFA dfa) {
+    public void printDFA(String fileName) {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(fileName);
             // inherited method from java.io.OutputStreamWriter
-            fileWriter.write(toDFA(dfa));
+            fileWriter.write(toDFA());
             fileWriter.write("\n-- Input strings for testing -----------\n");
             for (int i = 0; i < inputStrings.size(); i++) {
                 fileWriter.write(inputStrings.get(i)+"\n");
@@ -114,89 +114,79 @@ public class NFA {
 
     }
     
-    // private String toDFA(DFA dfa) {
+    private String toDFA() {
 
-    //     ArrayList<ArrayList<Integer>> DFAstates = new ArrayList<ArrayList<Integer>>(); // list of each state and its states
-    //     ArrayList<ArrayList<Integer>> DFAstructure = new ArrayList<ArrayList<Integer>>();
-    //     ArrayList<Integer> state = new ArrayList<Integer>(); //currently working on state;
-    //     ArrayList<Integer> DFAaccepting = new ArrayList<Integer>();
+        ArrayList<ArrayList<Integer>> DFAstates = new ArrayList<ArrayList<Integer>>(); // list of each state and its states
+        ArrayList<ArrayList<Integer>> DFAstructure = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> state = new ArrayList<Integer>(); //currently working on state;
+        state.add(initialState);
+        DFAstates.add(state);
 
-    //     state.add(initialState);
-    //     DFAstates.add(state);
+        for (int s = 0; s < DFAstates.size(); s++) {
+            ArrayList<Integer> tempState = new ArrayList<Integer>();
+            state = DFAstates.get(s);
 
-    //     dfa.Q = Q;
-    //     dfa.Sigma = Sigma;
-    //     dfa.structure = DFAstructure;
-    //     dfa.initialState = 0;
-    //     dfa.acceptingStates = DFAaccepting;
-    //     dfa.inputStrings = inputStrings;
+            for (int k = 0; k < Sigma.length; k++) {// loop through each sigma character
+                ArrayList<Integer> sigmaList = new ArrayList<Integer>();//sigma list is going to be empty initially sigma list = whatever states that can reach through that sigma character.
 
+                for (int i = 0; i < state.size(); i++) {//loop through each state currently acceptable
 
-    //     for (int s = 0; s < DFAstates.size(); s++) {
-    //         ArrayList<Integer> tempState = new ArrayList<Integer>();
-    //         state = DFAstates.get(s);
+                    int currentState = state.get(i); //access next state in the list
+                    for (int z = 0; z < structure.get(currentState).get(k).size(); z++) { //loop states list for the current sigma letter
+                        int node = structure.get(currentState).get(k).get(z);
+                        //add the nodes that have not been added yet
+                        sigmaList = addNode(sigmaList, node);
+                    }
+                }
 
-    //         for (int k = 0; k < Sigma.length; k++) {// loop through each sigma character
-    //             ArrayList<Integer> sigmaList = new ArrayList<Integer>();//sigma list is going to be empty initially sigma list = whatever states that can reach through that sigma character.
+                Collections.sort(sigmaList);
+                boolean add = true;
+                for (int c = 0; c < DFAstates.size(); c++) {
+                    if (DFAstates.get(c).equals(sigmaList)) {
+                        add = false;
+                    }
+                }
+                if (add) {
+                    DFAstates.add(sigmaList);
+                }
+                tempState.add(findState(DFAstates, sigmaList));
 
-    //             for (int i = 0; i < state.size(); i++) {//loop through each state currently acceptable
+            }
+            DFAstructure.add(tempState);
+        }
 
-    //                 int currentState = state.get(i); //access next state in the list
-    //                 for (int z = 0; z < structure.get(currentState).get(k).size(); z++) { //loop states list for the current sigma letter
-    //                     int node = structure.get(currentState).get(k).get(z);
-    //                     //add the nodes that have not been added yet
-    //                     sigmaList = addNode(sigmaList, node);
-    //                 }
-    //             }
+        ArrayList<Integer> DFAaccepting = new ArrayList<Integer>();
+        for (int i = 0; i < DFAstates.size(); i++) {
+            boolean accept = false;
+            for (int j = 0; j < acceptingStates.size(); j++) {
+                if (DFAstates.get(i).contains(acceptingStates.get(j))) {
+                    accept = true;
+                }
+            }
+            if (accept) {
+                DFAaccepting.add(i);
+            }
+        }
 
-    //             Collections.sort(sigmaList);
-    //             boolean add = true;
-    //             for (int c = 0; c < DFAstates.size(); c++) {
-    //                 if (DFAstates.get(c).equals(sigmaList)) {
-    //                     add = false;
-    //                 }
-    //             }
-    //             if (add) {
-    //                 DFAstates.add(sigmaList);
-    //             }
-    //             tempState.add(findState(DFAstates, sigmaList));
-
-    //         }
-    //         DFAstructure.add(tempState);
-    //     }
-
-       
-    //     for (int i = 0; i < DFAstates.size(); i++) {
-    //         boolean accept = false;
-    //         for (int j = 0; j < acceptingStates.size(); j++) {
-    //             if (DFAstates.get(i).contains(acceptingStates.get(j))) {
-    //                 accept = true;
-    //             }
-    //         }
-    //         if (accept) {
-    //             DFAaccepting.add(i);
-    //         }
-    //     }
-
-    //     String rep = "|Q|:\t" + DFAstates.size() + "\nSigma: ";
-    //     for (int i = 0; i < Sigma.length; i++) {
-    //         rep += "\t" + Sigma[i];
-    //     }
-    //     rep += "\n------------------------------";
-    //     for (int i = 0; i < DFAstates.size(); i++) {
-    //         rep += "\n\t" + i + ":";
-    //         for (int j = 0; j < Sigma.length; j++) {
-    //             rep += "\t" + DFAstructure.get(i).get(j);
-    //         }
-    //     }
-    //     rep += "\n------------------------------\nInitial State: " + 0 + "\nAccepting Sate(s): ";
-    //     rep += DFAaccepting.get(0);
-    //     for (int i = 1; i < DFAaccepting.size(); i++) {
-    //         rep += "," + DFAaccepting.get(i);
-    //     }
-    //     rep += "\n";
-    //     return rep;
-    // }
+        String rep = "|Q|:\t" + DFAstates.size() + "\nSigma: ";
+        for (int i = 0; i < Sigma.length; i++) {
+            rep += "\t" + Sigma[i];
+        }
+        rep += "\n------------------------------";
+        for (int i = 0; i < DFAstates.size(); i++) {
+            rep += "\n\t" + i + ":";
+            for (int j = 0; j < Sigma.length; j++) {
+                rep += "\t" + DFAstructure.get(i).get(j);
+            }
+        }
+        rep += "\n------------------------------\nInitial State: " + 0 + "\nAccepting Sate(s): ";
+        rep += DFAaccepting.get(0);
+        for (int i = 1; i < DFAaccepting.size(); i++) {
+            rep += "," + DFAaccepting.get(i);
+        }
+        rep += "\n";
+        return rep;
+    }
     
     private int findState(ArrayList<ArrayList<Integer>> states, ArrayList<Integer> sigmaList) {
         for (int i = 0; i < states.size(); i++) {
