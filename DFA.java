@@ -338,7 +338,7 @@ public class DFA {
                 rep += "\t" + structure[i][j];
             }
         }
-        rep += "\n----------------------------------\nInitial State: " + 0 + "\nAccepting State(s): ";
+        rep += "\n----------------------------------\nInitial State: " + initialState + "\nAccepting State(s): ";
         rep += acceptingStates.get(0);
         for (int i = 1; i < acceptingStates.size(); i++) {
             rep += "," + acceptingStates.get(i);
