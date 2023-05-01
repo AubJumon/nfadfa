@@ -95,6 +95,8 @@ public class DFA {
         }
     }
 
+    //loops through the list of input strings, printing yes if the string is valid, no if it isn't. 
+    //Keeps track of the number of yes and no to make sure exactly 15 are printed on each line and for the final count at the end.
     public void parsestrings(String fileName) {
         String curString;
         int curState;
@@ -111,6 +113,7 @@ public class DFA {
                 curChar = Arrays.binarySearch(Sigma,curString.charAt(j));
                 curState = structure[curState][curChar];
             }
+            //At the end of the input string, checks to see if the current state is an accepting state.
             if (acceptingStates.contains(curState))
             {
                 System.out.print("Yes ");
@@ -335,7 +338,7 @@ public class DFA {
                 rep += "\t" + structure[i][j];
             }
         }
-        rep += "\n----------------------------------\nInitial State: " + 0 + "\nAccepting Sate(s): ";
+        rep += "\n----------------------------------\nInitial State: " + 0 + "\nAccepting State(s): ";
         rep += acceptingStates.get(0);
         for (int i = 1; i < acceptingStates.size(); i++) {
             rep += "," + acceptingStates.get(i);
