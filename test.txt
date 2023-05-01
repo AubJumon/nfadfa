@@ -13,4 +13,5 @@ Accepting Sate(s): 0,2,3,5
 
 -- Input strings for testing -----------
 aabacadbdcacbacadbacaabacdcbbcadbcadbacabacabacdacabca
-aabacadbdcacbacadbacaabacdcbbcadbcadbacabacabacdacabca
+a
+bbaab

@@ -89,12 +89,12 @@ public class NFA {
         }
     }
     
-    public void printDFA(String fileName) {
+    public void printDFA(String fileName,DFA dfa) {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(fileName);
             // inherited method from java.io.OutputStreamWriter
-            fileWriter.write(toDFA());
+            fileWriter.write(toDFA(dfa));
             fileWriter.write("\n-- Input strings for testing -----------\n");
             for (int i = 0; i < inputStrings.size(); i++) {
                 fileWriter.write(inputStrings.get(i)+"\n");
@@ -114,14 +114,22 @@ public class NFA {
 
     }
     
-    private String toDFA() {
+    private String toDFA(DFA dfa) {
 
         ArrayList<ArrayList<Integer>> DFAstates = new ArrayList<ArrayList<Integer>>(); // list of each state and its states
         ArrayList<ArrayList<Integer>> DFAstructure = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> state = new ArrayList<Integer>(); //currently working on state;
+        ArrayList<Integer> DFAaccepting = new ArrayList<Integer>();
+
         state.add(initialState);
         DFAstates.add(state);
 
+        dfa.Q = Q;
+        dfa.Sigma = Sigma;
+        dfa.structure = DFAstructure;
+        dfa.initialState = 0;
+        dfa.acceptingStates = DFAaccepting;
+        dfa.inputStrings = inputStrings;
 
 
         for (int s = 0; s < DFAstates.size(); s++) {
@@ -157,7 +165,7 @@ public class NFA {
             DFAstructure.add(tempState);
         }
 
-        ArrayList<Integer> DFAaccepting = new ArrayList<Integer>();
+       
         for (int i = 0; i < DFAstates.size(); i++) {
             boolean accept = false;
             for (int j = 0; j < acceptingStates.size(); j++) {

@@ -7,8 +7,9 @@ public class NFA2DFA {
             fileName = args[0];
         }
         NFA nfa = new NFA(fileName);
-        nfa.printDFA("test.txt");
         DFA dfa = new DFA("test.txt");
+        nfa.printDFA("test.txt",dfa);
+        dfa.parsestrings(fileName);
 
     }
 }
