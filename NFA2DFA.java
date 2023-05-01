@@ -9,6 +9,8 @@ public class NFA2DFA {
         NFA nfa = new NFA(fileName);
         nfa.printDFA("test.txt");
         DFA dfa = new DFA("test.txt");
-
+        System.out.println(dfa);
+        dfa.minimizeDfa();
+        System.out.println(dfa);
     }
 }
